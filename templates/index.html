@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Agenda de Contatos</h1>
+  <!-- Formulário de criação de TODO -->
+  <form action="/create" method= "POST">
+    <input name="name" placeholder="Nome">
+    <input name="email" placeholder='E-mail'>
+    <input name="phone" placeholder='Telefone'>
+    <button type="submit">
+      Adicionar
+    </button>
+  </form>
+
+    <!-- Exibição da lista de TODOs -->
+
+  <ul>
+    {% for item in contacts %}
+      <li>
+        {% if item.complete == True %}
+        <s>{{ item.name }}</s>
+        {% else %}
+          <form
+            action="/update/{{loop.index0}}" 
+            method="POST"
+          >
+            <input 
+              name="name"
+              value="{{item.name}}"
+            >
+            <input 
+              name="email"
+              value="{{item.email}}"
+            >
+            <input 
+              name="phone"
+              value="{{item.phone}}"
+            >
+          <button type="submit">
+              Editar
+            </button>
+
+          <a href="/delete/{{loop.index0}}">
+          ❌
+          </a>
+          </form>        
+        {% endif %}
+        
+        
+      </li>
+        
+    {% endfor %}
+  </ul>
+
+  
+</body>
+</html>
