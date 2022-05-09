@@ -24,10 +24,35 @@
   <ul class="content">
    {% for todo in contact %}
      <li>
-       {{ todo.name }}
+       <form action="/update" method= "POST">
+    <input name="name" value="{{todo.name}}">
+    <input name="email" value="{{todo.email}}">
+    <input name="phone" value="{{todo.phone}}">
+    <button type="submit">
+      Editar
+    </button>
+    <a href="/delete/{{ todo.id }}">❌</a>
+  </form>
+
+
      </li>
    {% endfor %}
-  </ul>
+    
+   </form>
+    {% for x in new_contacts %}
+      <li class="card">
+      <form action="/update/{{ x.id }}" method= "POST">
+        <input name="name" value="{{x.name}}">
+        <input name="email" value="{{x.email}}">
+        <input name="phone" value="{{x.phone}}">
+        <button type="submit">
+          Editar
+        </button>
+      <a href="/delete/{{ x.id }}">❌</a>
+  </form>
+    {% endfor %}
+    
+</ul>
   
 </body>
 </html>

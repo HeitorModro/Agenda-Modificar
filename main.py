@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 app = Flask('app')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -36,21 +36,32 @@ class contacts (db.Model) :
 def index():
   todos = Users.query.all()
   rotas = contacts.query.all()
-  return render_template('index.html',todos = todos, contact = contact, rotas = rotas )
+  return render_template('index.html',todos = todos, contact = contact, new_contacts = rotas )
 
 @app.route('/create', methods = ['POST'])
 def create():
  name = request.form.get('name')
  email = request.form.get('email')
  phone = request.form.get('phone')
- new_todo = Users(name = name, email = email)
- contact.append({
-   'name': name, 'email' : email, 'phone' : phone
- })
- db.session.add(new_todo)
+ new_contacts = contacts(name = name, email = email, phone = phone)
+ db.session.add(new_contacts)
  db.session.commit()
  return redirect('/')
 
+@app.route('/delete/<int:id>')
+def delete(id):
+ todo = contacts.query.filter_by(id=id).first()
+ db.session.delete(todo)
+ db.session.commit()
+ return redirect('/')
+  
+@app.route('/update/<int:id>', methods=['POST'])
+def update(id):
+ title = request.form.get('title')
+ todo = contacts.query.filter_by(id=id).first()
+ todo.title = title
+ db.session.commit()
+ return redirect('/')
 
 if __name__ == '__main__':
   db.create_all()
