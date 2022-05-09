@@ -57,9 +57,13 @@ def delete(id):
   
 @app.route('/update/<int:id>', methods=['POST'])
 def update(id):
- title = request.form.get('title')
- todo = contacts.query.filter_by(id=id).first()
- todo.title = title
+ name = request.form.get('name')
+ email = request.form.get('email')
+ phone = request.form.get('phone')
+ new_contacts = contacts.query.filter_by(id=id).first()
+ new_contacts.name = name
+ new_contacts.email = email
+ new_contacts.phone = phone
  db.session.commit()
  return redirect('/')
 
